@@ -1,0 +1,20 @@
+{
+    "name": "employee-tracker",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node server.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "command line app to manage company's employee database",
+    "dependencies": {
+      "mysql2": "^3.6.0",
+      "inquirer": "^8.2.4",
+      "console.table": "^0.10.0",
+      "dotenv": "^16.3.1"
+    }
+  }
+  
