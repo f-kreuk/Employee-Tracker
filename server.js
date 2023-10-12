@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
-const consoleTable = require('console.table');
+require('console.table');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -96,7 +96,13 @@ const promptUser = () => {
 
 //Function to view all employees
 function viewAllEmployees() {
+    var query = `Select * from employee`
 
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        promptUser();
+    })
 };
 
 //Function to add employee
