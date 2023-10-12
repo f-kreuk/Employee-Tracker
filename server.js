@@ -95,8 +95,21 @@ const promptUser = () => {
 };
 
 //Function to view all employees
+//COALESCE function below will display "" if the value is null
+//left joins are used to join the employee table with the role and department tables, as well as the employee table itself
 function viewAllEmployees() {
-    var query = `Select * from employee`
+    var query = `
+    SELECT 
+        employee.id AS Id,
+        employee.first_name AS 'First Name',
+        employee.last_name AS 'Last Name',
+        COALESCE(role.title, '') AS Role,
+        COALESCE(department.name, '') AS Department,
+        COALESCE(CONCAT(manager.first_name,' ',manager.last_name), '') AS Manager
+    FROM employee
+    LEFT JOIN role ON employee.role_id = role.id
+    LEFT JOIN department ON role.department_id = department.id
+    LEFT JOIN employee AS manager ON employee.manager_id = manager.id;`
 
     connection.query(query, function (err, res) {
         if (err) throw err;
