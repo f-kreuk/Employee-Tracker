@@ -151,12 +151,12 @@ function addEmployee() {
         //finding the selected role
         const selectedRole = res.find((role) => role.title === answer.title);
 
-        var query = `INSERT INTO role SET ?`
+        var query = `INSERT INTO employee SET ?`
 
         connection.query(query, {
             first_name: answer.first_name,
             last_name: answer.last_name,
-            department_id: selectedRole.id //uses the role id
+            role_id: selectedRole.id //uses the role id
         },
         function (err, res) {
             if (err) throw err;
