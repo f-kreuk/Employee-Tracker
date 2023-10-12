@@ -149,6 +149,37 @@ function viewAllRoles() {
 
 //function add role
 function addRole() {
+    inquirer.prompt([
+        {
+        type: "input",
+        name: "title",
+        message: "What is the title for the new role?"
+        },
+        {
+        type: "input",
+        name: "salary",
+        message: "What is the salary for the new role?"
+        },
+        {
+        type: "input",
+        name: "department_id",
+        message: "What department are you adding this role to?"
+        },
+    ])
+    .then(function (answer) {
+        var query = `INSERT INTO role SET ?`
+
+        connection.query(query, {
+            title: answer.title,
+            salary: answer.salary,
+            department_id: answer.department_id
+        },
+        function (err, res) {
+            if (err) throw err;
+            console.log("Role added!");
+            promptUser();
+        });
+    });
 
 };
 
@@ -173,7 +204,7 @@ function addDepartment() {
         {
         type: "input",
         name: "departmentName",
-        message: "Department Name?"
+        message: "What is the name of the new department?"
         },
     ])
     .then(function (answer) {
