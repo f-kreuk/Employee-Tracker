@@ -94,30 +94,37 @@ const promptUser = () => {
     });
 };
 
-viewAllEmployees() {
+//Function to view all employees
+function viewAllEmployees() {
 
 };
 
-addEmployee() {
+//Function to add employee
+function addEmployee() {
 
 };
 
-updateEmployeeRole() {
+//function to update employee role
+function updateEmployeeRole() {
 
 };
 
-viewAllRoles() {
+//function to view all roles
+function viewAllRoles() {
 
 };
 
-addRole() {
+//function add role
+function addRole() {
 
 };
 
-viewAllDepartments() {
+//function to view all departments
+function viewAllDepartments() {
 
 };
 
-addDepartment() {
-    
+//function add department
+function addDepartment() {
+
 };
