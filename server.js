@@ -122,6 +122,49 @@ function viewAllEmployees() {
 //Function to add employee
 function addEmployee() {
 
+    //here we are getting a list of roles
+    connection.query("SELECT id, title FROM role", function (err, res) {
+        if (err) throw err;
+
+        const roleChoices = res.map((role) => role.title);
+
+    inquirer.prompt([
+        {
+        type: "input",
+        name: "first_name",
+        message: "What is the first name of the new employee?"
+        },
+        {
+        type: "input",
+        name: "last_name",
+        message: "What is the last name of the new employee?"
+        },
+        {
+        type: "list", //here we are inputting the roles from our query as the choices
+        name: "title",
+        message: "What is the title for this new employee?",
+        choices: roleChoices
+        },
+    ])
+    .then(function (answer) {
+
+        //finding the selected role
+        const selectedRole = res.find((role) => role.title === answer.title);
+
+        var query = `INSERT INTO role SET ?`
+
+        connection.query(query, {
+            first_name: answer.first_name,
+            last_name: answer.last_name,
+            department_id: selectedRole.id //uses the role id
+        },
+        function (err, res) {
+            if (err) throw err;
+            console.log("Employee added!");
+            promptUser();
+        });
+    });
+    });
 };
 
 //function to update employee role
