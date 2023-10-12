@@ -123,10 +123,17 @@ function viewAllEmployees() {
 function addEmployee() {
 
     //here we are getting a list of roles
-    connection.query("SELECT id, title FROM role", function (err, res) {
+    connection.query("SELECT id, title FROM role", function (err, roles) {
         if (err) throw err;
 
-        const roleChoices = res.map((role) => role.title);
+        const roleChoices = roles.map((role) => role.title);
+
+        //here we get a list of existing employees for the manager
+        connection.query("SELECT id, first_name, last_name FROM employee", function (err, employees) {
+            if (err) throw err;
+
+            const managerChoices = employees.map((employee) => `${employee.first_name} ${employee.last_name}`);
+            managerChoices.unshift("None"); // this lets us select "None" if the employee doesnt have a manager
 
     inquirer.prompt([
         {
@@ -145,18 +152,33 @@ function addEmployee() {
         message: "What is the title for this new employee?",
         choices: roleChoices
         },
+        {
+        type: "list",
+        name: "manager",
+        message: "Who is the manager for this new employee?",
+        choices: managerChoices    
+        }
     ])
     .then(function (answer) {
 
         //finding the selected role
-        const selectedRole = res.find((role) => role.title === answer.title);
+        const selectedRole = roles.find((role) => role.title === answer.title);
+        let managerId = null;
+
+        if (answer.manager !== "None") {
+            const managerName = answer.manager.split(" ");
+            const manager = employees.find((employee) => employee.first_name === managerName[0] && employee.last_name === managerName[1]);
+            managerId = manager.id;
+        }
+
 
         var query = `INSERT INTO employee SET ?`
 
         connection.query(query, {
             first_name: answer.first_name,
             last_name: answer.last_name,
-            role_id: selectedRole.id //uses the role id
+            role_id: selectedRole.id, //uses the role id
+            manager_id: managerId //uses the employee id
         },
         function (err, res) {
             if (err) throw err;
@@ -165,6 +187,7 @@ function addEmployee() {
         });
     });
     });
+});
 };
 
 //function to update employee role
