@@ -11,8 +11,20 @@ const connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
+    if (err) throw err;
+    console.log("Employee database connected.");
+    //Utilized https://patorjk.com/software/taag/#p=display&f=Shadow&t=Employee%20Tracker with "Shadow Font" to generate ASCII Art
+    console.log(`
     
-})
+    ____|                    |                               __ __|                  |                
+    __|    __ \`__ \\   __ \\   |   _ \\   |   |   _ \\   _ \\        |   __|  _\` |   __|  |  /   _ \\   __| 
+    |      |   |   |  |   |  |  (   |  |   |   __/   __/        |  |    (   |  (       <    __/  |    
+   _____| _|  _|  _|  .__/  _| \\___/  \\__, | \\___| \\___|       _| _|   \\__,_| \\___| _|\_\\ \\___| _|    
+                     _|               ____/                                                           
+    
+    `);
+    promptUser();
+});
 
 
 //below is the basic prompt for the user
@@ -40,45 +52,72 @@ const promptUser = () => {
         const {choices} = answers;
 
         if (choices === "View All Employees") {
+            viewAllEmployees();
             console.log("View All Employees");
         }
 
         if (choices === "Add Employee") {
+            addEmployee();
             console.log("Add Employee");
         }
 
         if (choices === "Update Employee Role") {
+            updateEmployeeRole();
             console.log("Update Employee Role");
         }
 
         if (choices === "View All Roles") {
+            viewAllRoles();
             console.log("View All Roles");
         }
 
         if (choices === "Add Role") {
+            addRole();
             console.log("Add Role");
         }
 
         if (choices === "View All Departments") {
+            viewAllDepartments();
             console.log("View All Departments");
         }
 
         if (choices === "Add Department") {
+            addDepartment();
             console.log("Add Department");
         }
 
         if (choices === "Quit") {
+            connection.end();
             console.log("Quit")
         };
 
     });
 };
 
-// function to initialize the app
-const init = () => {
-    promptUser()
+viewAllEmployees() {
+
 };
 
+addEmployee() {
 
-// function call to initialize app
-init();
+};
+
+updateEmployeeRole() {
+
+};
+
+viewAllRoles() {
+
+};
+
+addRole() {
+
+};
+
+viewAllDepartments() {
+
+};
+
+addDepartment() {
+    
+};
