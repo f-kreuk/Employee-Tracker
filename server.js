@@ -175,12 +175,16 @@ function addRole() {
         },
     ])
     .then(function (answer) {
+
+        //finding the selected department
+        const selectedDepartment = res.find((department) => department.name === answer.department);
+
         var query = `INSERT INTO role SET ?`
 
         connection.query(query, {
             title: answer.title,
             salary: answer.salary,
-            department_id: answer.department_id
+            department_id: selectedDepartment.id //uses the department id
         },
         function (err, res) {
             if (err) throw err;
