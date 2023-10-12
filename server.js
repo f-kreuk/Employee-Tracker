@@ -149,6 +149,13 @@ function viewAllRoles() {
 
 //function add role
 function addRole() {
+
+    //here we are getting a list of the departments
+    connection.query("SELECT id, name FROM department", function (err, res) {
+        if (err) throw err;
+
+        const departmentChoices = res.map((department) => department.name);
+
     inquirer.prompt([
         {
         type: "input",
@@ -161,9 +168,10 @@ function addRole() {
         message: "What is the salary for the new role?"
         },
         {
-        type: "input",
-        name: "department_id",
-        message: "What department are you adding this role to?"
+        type: "list", //here we are inputting the departments from our query as the choices
+        name: "department",
+        message: "What department are you adding this role to?",
+        choices: departmentChoices
         },
     ])
     .then(function (answer) {
@@ -180,7 +188,7 @@ function addRole() {
             promptUser();
         });
     });
-
+    });
 };
 
 //function to view all departments
@@ -200,6 +208,7 @@ function viewAllDepartments() {
 
 //function to add department
 function addDepartment() {
+    //using inquirer to prompt user for the new department name
     inquirer.prompt([
         {
         type: "input",
@@ -209,7 +218,7 @@ function addDepartment() {
     ])
     .then(function (answer) {
         var query = `INSERT INTO department SET ?`
-
+        //use connection method to insert new department into department table
         connection.query(query, {
             name: answer.departmentName
         },
