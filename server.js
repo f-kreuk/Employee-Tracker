@@ -104,6 +104,7 @@ function viewAllEmployees() {
         employee.first_name AS 'First Name',
         employee.last_name AS 'Last Name',
         COALESCE(role.title, '') AS Role,
+        COALESCE(role.salary, '') AS Salary,
         COALESCE(department.name, '') AS Department,
         COALESCE(CONCAT(manager.first_name,' ',manager.last_name), '') AS Manager
     FROM employee
@@ -130,8 +131,21 @@ function updateEmployeeRole() {
 
 //function to view all roles
 function viewAllRoles() {
+    var query = `
+    SELECT 
+        role.id AS Id,
+        role.title AS 'Title',
+        role.salary AS 'Salary',
+        COALESCE(department.name, '') AS Department
+    FROM role
+    LEFT JOIN department ON role.department_id = department.id;`
 
-};
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        promptUser();
+    })
+};   
 
 //function add role
 function addRole() {
@@ -140,7 +154,17 @@ function addRole() {
 
 //function to view all departments
 function viewAllDepartments() {
+    var query = `
+    SELECT
+        department.id as Id,
+        department.name as Department
+    FROM department;`
 
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        promptUser();
+    })
 };
 
 //function add department
