@@ -167,7 +167,26 @@ function viewAllDepartments() {
     })
 };
 
-//function add department
+//function to add department
 function addDepartment() {
+    inquirer.prompt([
+        {
+        type: "input",
+        name: "departmentName",
+        message: "Department Name?"
+        },
+    ])
+    .then(function (answer) {
+        var query = `INSERT INTO department SET ?`
+
+        connection.query(query, {
+            name: answer.departmentName
+        },
+        function (err, res) {
+            if (err) throw err;
+            console.log("Department added!");
+            promptUser();
+        });
+    });
 
 };
