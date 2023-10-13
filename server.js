@@ -192,8 +192,48 @@ function addEmployee() {
 
 //function to update employee role
 function updateEmployeeRole() {
+    // first get list of employees
+    connection.query("SELECT id, first_name, last_name FROM employee", function (err, employees) {
+        if (err) throw err;
 
-};
+        const employeeChoices = employees.map((employee) => `${employee.first_name} ${employee.last_name}`);
+        //get list of roles
+        connection.query("SELECT id, title FROM role", function (err, roles) {
+            if (err) throw err;
+
+            const roleChoices = roles.map((role) => role.title);
+
+            inquirer.prompt([
+                {
+                    type: "list",
+                    name: "employee",
+                    message: "Which employee do you want to update?",
+                    choices: employeeChoices
+                },
+                {
+                    type: "list",
+                    name: "newRole",
+                    message: "What is your employee's new role?",
+                    choices: roleChoices
+                }
+            ])
+            .then(function (answers) {
+                const selectedEmployeeName = answers.employee;
+                const newRoleTitle = answers.newRole;
+                const selectedEmployee = employees.find((employee) => `${employee.first_name} ${employee.last_name}` === selectedEmployeeName);
+                const newRole = roles.find((role) => role.title === newRoleTitle);
+
+                // here we update the employee's role in the database
+                const query = "UPDATE employee SET role_id = ? WHERE id = ?";
+                connection.query(query, [newRole.id, selectedEmployee.id], function (err, result) {
+                    if (err) throw err;
+                    console.log("Employee role updated!");
+                    promptUser(); 
+                });
+            });
+        });
+    });
+}
 
 //function to view all roles
 function viewAllRoles() {
